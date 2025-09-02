@@ -1,0 +1,162 @@
+{
+	"gge1": {
+		"props": {
+			"Designator": "U1",
+			"device_name": "TPS54302DDCR",
+			"value": "",
+			"Supplier Part": "C311983"
+		},
+		"pins": {
+			"1": "gnd",
+			"2": "net_sw",
+			"3": "vin_power_input",
+			"4": "net_fb",
+			"5": "enable_control",
+			"6": "net_boot"
+		}
+	},
+	"gge2": {
+		"props": {
+			"Designator": "C1",
+			"device_name": "",
+			"value": "10μF",
+			"Supplier Part": "C15849"
+		},
+		"pins": {
+			"1": "vin_power_input",
+			"2": "gnd"
+		}
+	},
+	"gge3": {
+		"props": {
+			"Designator": "C2",
+			"device_name": "",
+			"value": "0.1μF",
+			"Supplier Part": "C15849"
+		},
+		"pins": {
+			"1": "vin_power_input",
+			"2": "gnd"
+		}
+	},
+	"gge4": {
+		"props": {
+			"Designator": "C3",
+			"device_name": "",
+			"value": "0.1μF",
+			"Supplier Part": "C15849"
+		},
+		"pins": {
+			"1": "net_boot",
+			"2": "net_sw"
+		}
+	},
+	"gge5": {
+		"props": {
+			"Designator": "L1",
+			"device_name": "",
+			"value": "10μH",
+			"Supplier Part": "C1035"
+		},
+		"pins": {
+			"1": "net_sw",
+			"2": "vout_converted"
+		}
+	},
+	"gge6": {
+		"props": {
+			"Designator": "C4",
+			"device_name": "",
+			"value": "22μF",
+			"Supplier Part": "C15849"
+		},
+		"pins": {
+			"1": "vout_converted",
+			"2": "gnd"
+		}
+	},
+	"gge7": {
+		"props": {
+			"Designator": "C5",
+			"device_name": "",
+			"value": "22μF",
+			"Supplier Part": "C15849"
+		},
+		"pins": {
+			"1": "vout_converted",
+			"2": "gnd"
+		}
+	},
+	"gge8": {
+		"props": {
+			"Designator": "R1",
+			"device_name": "",
+			"value": "49.9Ω",
+			"Supplier Part": "C25804"
+		},
+		"pins": {
+			"1": "vout_converted",
+			"2": "net_r1"
+		}
+	},
+	"gge9": {
+		"props": {
+			"Designator": "R2",
+			"device_name": "",
+			"value": "100kΩ",
+			"Supplier Part": "C25804"
+		},
+		"pins": {
+			"1": "net_r1",
+			"2": "net_fb"
+		}
+	},
+	"gge10": {
+		"props": {
+			"Designator": "R3",
+			"device_name": "",
+			"value": "13.3kΩ",
+			"Supplier Part": "C25804"
+		},
+		"pins": {
+			"1": "net_fb",
+			"2": "gnd"
+		}
+	},
+	"gge11": {
+		"props": {
+			"Designator": "C6",
+			"device_name": "",
+			"value": "75pF",
+			"Supplier Part": "C15849"
+		},
+		"pins": {
+			"1": "net_r1",
+			"2": "net_fb"
+		}
+	},
+	"gge12": {
+		"props": {
+			"Designator": "R4",
+			"device_name": "",
+			"value": "46.4kΩ",
+			"Supplier Part": "C25804"
+		},
+		"pins": {
+			"1": "vin_power_input",
+			"2": "enable_control"
+		}
+	},
+	"gge13": {
+		"props": {
+			"Designator": "R5",
+			"device_name": "",
+			"value": "10kΩ",
+			"Supplier Part": "C25804"
+		},
+		"pins": {
+			"1": "enable_control",
+			"2": "gnd"
+		}
+	}
+}

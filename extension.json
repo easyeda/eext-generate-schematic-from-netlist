@@ -3,7 +3,7 @@
 	"uuid": "fd558598266041e0af783b4184ac8405",
 	"displayName": "网表重建原理图",
 	"description": "导入网表JSON文件，自动重建原理图布局",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"publisher": "JLCEDA <support@lceda.cn>",
 	"engines": {
 		"eda": "^2.3.0"
@@ -13,30 +13,17 @@
 		"type": "extension-store",
 		"url": ""
 	},
-	"categories": "Other",
+	"categories": "Schematic",
 	"keywords": ["netlist", "schematic", "rebuild", "网表", "原理图"],
 	"images": {
 		"logo": "./images/logo.png"
 	},
-	"homepage": "https://pro.lceda.cn",
-	"bugs": "https://lceda.cn/page/feedback?originPage=other",
+	"homepage": "https://github.com/easyeda/eext-generate-schematic-from-netlist",
+	"bugs": "https://github.com/easyeda/eext-generate-schematic-from-netlist/issues",
 	"activationEvents": {},
 	"entry": "./dist/index",
 	"dependentExtensions": {},
 	"headerMenus": {
-		"home": [
-			{
-				"id": "API SDK",
-				"title": "API SDK",
-				"menuItems": [
-					{
-						"id": "About",
-						"title": "About...",
-						"registerFn": "about"
-					}
-				]
-			}
-		],
 		"sch": [
 			{
 				"id": "NetlistRebuild",
@@ -50,19 +37,6 @@
 					{
 						"id": "About",
 						"title": "关于...",
-						"registerFn": "about"
-					}
-				]
-			}
-		],
-		"pcb": [
-			{
-				"id": "API SDK",
-				"title": "API SDK",
-				"menuItems": [
-					{
-						"id": "About",
-						"title": "About...",
 						"registerFn": "about"
 					}
 				]

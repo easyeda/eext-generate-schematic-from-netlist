@@ -84,7 +84,7 @@ async function selectAndReadNetlistFile(): Promise<string | null> {
 		const file = await eda.sys_FileSystem.openReadFileDialog(['json', 'enet']);
 
 		if (!file) {
-			eda.sys_Message.showToastMessage('未选择文件', 'info'  );
+			eda.sys_Message.showToastMessage('未选择文件', 'info');
 			return null;
 		}
 
@@ -107,7 +107,7 @@ async function selectAndReadNetlistFile(): Promise<string | null> {
 		});
 	} catch (error) {
 		console.error('文件选择失败:', error);
-		eda.sys_Message.showToastMessage('文件选择失败: ' + error, 'error'  );
+		eda.sys_Message.showToastMessage('文件选择失败: ' + error, 'error');
 		return null;
 	}
 }
@@ -146,7 +146,7 @@ async function rebuildSchematic(netlistData: NetlistData): Promise<void> {
 
 	// 检查libUuid是否有效
 	if (!libUuid) {
-		eda.sys_Message.showToastMessage('无法获取系统库UUID', 'error'  );
+		eda.sys_Message.showToastMessage('无法获取系统库UUID', 'error');
 		return;
 	}
 
@@ -158,7 +158,7 @@ async function rebuildSchematic(netlistData: NetlistData): Promise<void> {
 			if (layoutInfo) {
 				components.push(layoutInfo);
 				eda.sys_Log.add(`器件放置进度: ${components.length}/${Object.keys(netlistData).length}`);
-				
+
 				// 立即为当前器件创建网络标签
 				await createNetWiresForSingleComponent(layoutInfo, netlistData);
 			} else {
@@ -180,7 +180,7 @@ async function rebuildSchematic(netlistData: NetlistData): Promise<void> {
 		} catch (error) {
 			const errorMsg = `放置器件 ${component.props.Designator} 发生异常: ${error}`;
 			eda.sys_Log.add(errorMsg);
-			eda.sys_Message.showToastMessage(errorMsg, 'error'  );
+			eda.sys_Message.showToastMessage(errorMsg, 'error');
 			console.error(`放置器件 ${component.props.Designator} 失败:`, error);
 			// 异常情况也记录为未找到
 			notFoundComponents.push(component.props.Designator);
@@ -193,11 +193,11 @@ async function rebuildSchematic(netlistData: NetlistData): Promise<void> {
 	const failedComponents = notFoundComponents.length;
 
 	eda.sys_Log.add(`原理图重建完成 - 总器件数: ${totalComponents}, 成功: ${successComponents}, 失败: ${failedComponents}`);
-	
+
 	if (failedComponents > 0) {
 		const message = `重建完成！成功放置 ${successComponents}/${totalComponents} 个器件。\n未找到的器件: ${notFoundComponents.join(', ')}`;
 		eda.sys_Log.add(`未找到的器件列表: ${notFoundComponents.join(', ')}`);
-		eda.sys_Message.showToastMessage(message, 'warning'  );
+		eda.sys_Message.showToastMessage(message, 'warning');
 	} else {
 		const message = `重建完成！成功放置所有 ${successComponents} 个器件。`;
 		eda.sys_Log.add(message);
@@ -233,7 +233,9 @@ async function findDeviceInfo(component: NetlistComponent): Promise<any> {
 		}
 	}
 
-	eda.sys_Log.add(`器件查找失败: ${component.props.Designator} - 供应商料号: ${component.props['Supplier Part'] || '无'}, 器件名称: ${component.props.device_name || '无'}`);
+	eda.sys_Log.add(
+		`器件查找失败: ${component.props.Designator} - 供应商料号: ${component.props['Supplier Part'] || '无'}, 器件名称: ${component.props.device_name || '无'}`,
+	);
 	return null;
 }
 
@@ -290,7 +292,7 @@ async function placeComponent(
 ): Promise<ComponentLayout | null> {
 	try {
 		eda.sys_Log.add(`开始放置器件: ${component.props.Designator} 位置(${x}, ${y})`);
-		
+
 		const deviceInfo = await findDeviceInfo(component);
 		if (!deviceInfo) {
 			const errorMsg = `系统库中未找到器件: ${component.props.Designator}`;
@@ -317,7 +319,7 @@ async function placeComponent(
 		const { width, height } = calculateComponentSize(pins, x, y);
 
 		eda.sys_Log.add(`器件放置成功: ${component.props.Designator} - ${deviceInfo.name}`);
-		
+
 		return {
 			primitiveId,
 			componentId,
@@ -330,7 +332,7 @@ async function placeComponent(
 	} catch (error) {
 		const errorMsg = `放置器件异常: ${component.props.Designator} - ${error}`;
 		eda.sys_Log.add(errorMsg);
-		eda.sys_Message.showToastMessage(errorMsg, 'error'  );
+		eda.sys_Message.showToastMessage(errorMsg, 'error');
 		console.error('放置器件失败:', error);
 		return null;
 	}
@@ -491,9 +493,8 @@ async function createNetWiresForComponents(targetComponents: ComponentLayout[], 
 /**
  * 创建网络导线（保留原函数以防其他地方调用）
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function createNetWires(components: ComponentLayout[], netlistData: NetlistData): Promise<void> {
-	const netGroups: Record<string, Array<{ component: ComponentLayout; netName: string; actualPin: any }>> = {};
-
 	// 直接调用新的函数处理所有器件
 	await createNetWiresForComponents(components, netlistData);
 }

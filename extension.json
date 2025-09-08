@@ -3,7 +3,7 @@
 	"uuid": "fd558598266041e0af783b4184ac8405",
 	"displayName": "网表重建原理图",
 	"description": "导入网表JSON文件，自动重建原理图布局",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"publisher": "JLCEDA <support@lceda.cn>",
 	"engines": {
 		"eda": "^2.3.0"

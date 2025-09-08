@@ -25,8 +25,8 @@
 	"器件ID": {
 		"props": {
 			"Designator": "器件标识符",
-			"device_name": "器件名称",
-			"value": "器件值",
+			"Device_name": "器件名称",
+			"Value": "器件值",
 			"Supplier Part": "供应商料号"
 		},
 		"pins": {

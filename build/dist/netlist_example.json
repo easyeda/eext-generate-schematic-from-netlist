@@ -2,8 +2,8 @@
     "gge1": {
         "props": {
             "Designator": "U1",
-            "device_name": "TPS54302DDCR",
-            "value": "",
+            "Device_name": "TPS54302DDCR",
+            "Value": "",
             "Supplier Part":"C311983"
         },
         "pins": {
@@ -18,7 +18,7 @@
     "gge2": {
         "props": {
             "Designator": "C1",
-            "device_name": "",
+            "Device_name": "",
             "value": "10μF",
             "Supplier Part": "C15849"
         },
@@ -30,8 +30,8 @@
     "gge3": {
         "props": {
             "Designator": "C2",
-            "device_name": "",
-            "value": "0.1μF",
+            "Device_name": "",
+            "Value": "0.1μF",
             "Supplier Part": "C15849"
         },
         "pins": {

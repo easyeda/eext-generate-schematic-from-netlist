@@ -1,46 +1,52 @@
 {
-	"name": "generate-schematic-from-netlist",
-	"uuid": "fd558598266041e0af783b4184ac8405",
-	"displayName": "网表重建原理图",
-	"description": "导入网表JSON文件，自动重建原理图布局",
-	"version": "1.0.5",
-	"publisher": "JLCEDA <support@lceda.cn>",
-	"engines": {
-		"eda": "^2.3.0"
-	},
-	"license": "Apache-2.0",
-	"repository": {
-		"type": "extension-store",
-		"url": ""
-	},
-	"categories": "Schematic",
-	"keywords": ["netlist", "schematic", "rebuild", "网表", "原理图"],
-	"images": {
-		"logo": "./images/logo.png"
-	},
-	"homepage": "https://github.com/easyeda/eext-generate-schematic-from-netlist",
-	"bugs": "https://github.com/easyeda/eext-generate-schematic-from-netlist/issues",
-	"activationEvents": {},
-	"entry": "./dist/index",
-	"dependentExtensions": {},
-	"headerMenus": {
-		"sch": [
-			{
-				"id": "NetlistRebuild",
-				"title": "网表重建",
-				"menuItems": [
-					{
-						"id": "ImportNetlist",
-						"title": "导入网表文件",
-						"registerFn": "importNetlist"
-					},
-					{
-						"id": "About",
-						"title": "关于...",
-						"registerFn": "about"
-					}
-				]
-			}
-		]
-	}
+  "name": "generate-schematic-from-netlist",
+  "uuid": "fd558598266041e0af783b4184ac8405",
+  "displayName": "网表重建原理图",
+  "description": "导入网表JSON文件，自动重建原理图布局",
+  "version": "1.0.5",
+  "publisher": "EasyEDA",
+  "engines": {
+    "eda": "^2.3.0"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/easyeda/eext-generate-schematic-from-netlist"
+  },
+  "categories": "Schematic",
+  "keywords": [
+    "netlist",
+    "schematic",
+    "rebuild",
+    "网表",
+    "原理图"
+  ],
+  "images": {
+    "logo": "./images/logo.png"
+  },
+  "homepage": "https://github.com/easyeda",
+  "bugs": "https://github.com/easyeda/eext-generate-schematic-from-netlist/issues",
+  "activationEvents": {},
+  "entry": "./dist/index",
+  "dependentExtensions": {},
+  "headerMenus": {
+    "sch": [
+      {
+        "id": "NetlistRebuild",
+        "title": "网表重建",
+        "menuItems": [
+          {
+            "id": "ImportNetlist",
+            "title": "导入网表文件",
+            "registerFn": "importNetlist"
+          },
+          {
+            "id": "About",
+            "title": "关于...",
+            "registerFn": "about"
+          }
+        ]
+      }
+    ]
+  }
 }

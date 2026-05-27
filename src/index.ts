@@ -11,10 +11,12 @@ interface NetlistComponent {
 	props: {
 		Designator: string;
 		device_name: string;
+		DeviceName?: string;
 		value: string;
 		'Supplier Part': string;
 	};
-	pins: Record<string, string>;
+	pins?: Record<string, string>;
+	pinInfoMap?: Record<string, { name: string; number: string; net: string }>;
 }
 
 interface NetlistData {
@@ -118,10 +120,32 @@ async function selectAndReadNetlistFile(): Promise<string | null> {
 function parseNetlistData(fileContent: string): NetlistData | null {
 	try {
 		const data = JSON.parse(fileContent);
-		// 验证数据格式
 		if (typeof data !== 'object' || data === null) {
 			return null;
 		}
+
+		// 检测 .enet 格式（包含顶层 version 和 components 键）
+		if (data.components && typeof data.components === 'object') {
+			const components: NetlistData = {};
+			for (const [id, comp] of Object.entries(data.components)) {
+				const c = comp as any;
+				// 标准化 pins: 将 pinInfoMap 转换为 pins 格式 { pinNumber: netName }
+				if (c.pinInfoMap && !c.pins) {
+					const pins: Record<string, string> = {};
+					for (const [pinNum, pinInfo] of Object.entries(c.pinInfoMap)) {
+						pins[pinNum] = (pinInfo as any).net || '';
+					}
+					c.pins = pins;
+				}
+				// 标准化 device_name: .enet 格式使用 DeviceName (PascalCase)
+				if (c.props && !c.props.device_name && c.props.DeviceName) {
+					c.props.device_name = c.props.DeviceName;
+				}
+				components[id] = c as NetlistComponent;
+			}
+			return components;
+		}
+
 		return data as NetlistData;
 	} catch (error) {
 		console.error('文件解析失败:', error);
@@ -374,8 +398,14 @@ async function createNetWiresForSingleComponent(component: ComponentLayout, netl
 					let endX = pinX;
 					let endY = pinY;
 
-					// 根据引脚位置确定导线方向
-					const componentCenter = component.x + component.width / 2;
+					// 根据实际引脚坐标计算器件中心
+					let pinMinX = Infinity;
+					let pinMaxX = -Infinity;
+					for (const p of actualPins) {
+						pinMinX = Math.min(pinMinX, (p as any).x);
+						pinMaxX = Math.max(pinMaxX, (p as any).x);
+					}
+					const componentCenter = (pinMinX + pinMaxX) / 2;
 
 					// 根据引脚位置判断导线方向
 					if (pinX >= componentCenter) {
@@ -408,6 +438,7 @@ async function createNetWiresForSingleComponent(component: ComponentLayout, netl
  */
 async function createNetWiresForComponents(targetComponents: ComponentLayout[], netlistData: NetlistData): Promise<void> {
 	const netGroups: Record<string, Array<{ component: ComponentLayout; netName: string; actualPin: any }>> = {};
+	const componentCenters: Record<string, number> = {};
 
 	// 收集目标器件的网络连接信息
 	for (const layout of targetComponents) {
@@ -419,6 +450,17 @@ async function createNetWiresForComponents(targetComponents: ComponentLayout[], 
 		}
 
 		// 获取器件的实际引脚信息
+
+		// 根据实际引脚坐标计算器件中心
+		let pinMinX = Infinity;
+		let pinMaxX = -Infinity;
+		if (actualPins) {
+			for (const p of actualPins) {
+				pinMinX = Math.min(pinMinX, (p as any).x);
+				pinMaxX = Math.max(pinMaxX, (p as any).x);
+			}
+		}
+		componentCenters[layout.primitiveId] = (pinMinX + pinMaxX) / 2;
 		const actualPins = await eda.sch_PrimitiveComponent.getAllPinsByPrimitiveId(layout.primitiveId);
 
 		// 遍历器件的所有引脚
@@ -463,8 +505,8 @@ async function createNetWiresForComponents(targetComponents: ComponentLayout[], 
 					let endX = pinX;
 					let endY = pinY;
 
-					// 根据引脚位置确定导线方向
-					const componentCenter = connection.component.x + connection.component.width / 2;
+					// 使用之前计算好的器件中心
+					const componentCenter = componentCenters[connection.component.primitiveId];
 
 					// 根据引脚位置判断导线方向
 					if (pinX >= componentCenter) {

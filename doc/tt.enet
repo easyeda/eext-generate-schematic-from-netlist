@@ -1,0 +1,731 @@
+{
+    "version": "2.0.0",
+    "components": {
+        "gge1": {
+            "props": {
+                "Designator": "U1",
+                "DeviceName": "2.54-2*20",
+                "Supplier Part": "C2977589"
+            },
+            "pinInfoMap": {
+                "1": {
+                    "name": "1",
+                    "number": "1",
+                    "net": "3V3",
+                    "props": {
+                        "Pin Number": "1"
+                    }
+                },
+                "2": {
+                    "name": "2",
+                    "number": "2",
+                    "net": "+5V",
+                    "props": {
+                        "Pin Number": "2"
+                    }
+                },
+                "3": {
+                    "name": "3",
+                    "number": "3",
+                    "net": "LCD_DC",
+                    "props": {
+                        "Pin Number": "3"
+                    }
+                },
+                "4": {
+                    "name": "4",
+                    "number": "4",
+                    "net": "+5V",
+                    "props": {
+                        "Pin Number": "4"
+                    }
+                },
+                "5": {
+                    "name": "5",
+                    "number": "5",
+                    "net": "LCD_RES",
+                    "props": {
+                        "Pin Number": "5"
+                    }
+                },
+                "6": {
+                    "name": "6",
+                    "number": "6",
+                    "net": "GND",
+                    "props": {
+                        "Pin Number": "6"
+                    }
+                },
+                "7": {
+                    "name": "7",
+                    "number": "7",
+                    "net": "SPI2_CS0",
+                    "props": {
+                        "Pin Number": "7"
+                    }
+                },
+                "8": {
+                    "name": "8",
+                    "number": "8",
+                    "net": "UART_TX",
+                    "props": {
+                        "Pin Number": "8"
+                    }
+                },
+                "9": {
+                    "name": "9",
+                    "number": "9",
+                    "net": "GND",
+                    "props": {
+                        "Pin Number": "9"
+                    }
+                },
+                "10": {
+                    "name": "10",
+                    "number": "10",
+                    "net": "UART_RX",
+                    "props": {
+                        "Pin Number": "10"
+                    }
+                },
+                "11": {
+                    "name": "11",
+                    "number": "11",
+                    "net": "SPI2_CLK",
+                    "props": {
+                        "Pin Number": "11"
+                    }
+                },
+                "12": {
+                    "name": "12",
+                    "number": "12",
+                    "net": "",
+                    "props": {
+                        "Pin Number": "12"
+                    }
+                },
+                "13": {
+                    "name": "13",
+                    "number": "13",
+                    "net": "",
+                    "props": {
+                        "Pin Number": "13"
+                    }
+                },
+                "14": {
+                    "name": "14",
+                    "number": "14",
+                    "net": "GND",
+                    "props": {
+                        "Pin Number": "14"
+                    }
+                },
+                "15": {
+                    "name": "15",
+                    "number": "15",
+                    "net": "LCD_BLK",
+                    "props": {
+                        "Pin Number": "15"
+                    }
+                },
+                "16": {
+                    "name": "16",
+                    "number": "16",
+                    "net": "",
+                    "props": {
+                        "Pin Number": "16"
+                    }
+                },
+                "17": {
+                    "name": "17",
+                    "number": "17",
+                    "net": "3V3",
+                    "props": {
+                        "Pin Number": "17"
+                    }
+                },
+                "18": {
+                    "name": "18",
+                    "number": "18",
+                    "net": "",
+                    "props": {
+                        "Pin Number": "18"
+                    }
+                },
+                "19": {
+                    "name": "19",
+                    "number": "19",
+                    "net": "NET1",
+                    "props": {
+                        "Pin Number": "19"
+                    }
+                },
+                "20": {
+                    "name": "20",
+                    "number": "20",
+                    "net": "GND",
+                    "props": {
+                        "Pin Number": "20"
+                    }
+                },
+                "21": {
+                    "name": "21",
+                    "number": "21",
+                    "net": "NET2",
+                    "props": {
+                        "Pin Number": "21"
+                    }
+                },
+                "22": {
+                    "name": "22",
+                    "number": "22",
+                    "net": "",
+                    "props": {
+                        "Pin Number": "22"
+                    }
+                },
+                "23": {
+                    "name": "23",
+                    "number": "23",
+                    "net": "NET3",
+                    "props": {
+                        "Pin Number": "23"
+                    }
+                },
+                "24": {
+                    "name": "24",
+                    "number": "24",
+                    "net": "",
+                    "props": {
+                        "Pin Number": "24"
+                    }
+                },
+                "25": {
+                    "name": "25",
+                    "number": "25",
+                    "net": "GND",
+                    "props": {
+                        "Pin Number": "25"
+                    }
+                },
+                "26": {
+                    "name": "26",
+                    "number": "26",
+                    "net": "",
+                    "props": {
+                        "Pin Number": "26"
+                    }
+                },
+                "27": {
+                    "name": "27",
+                    "number": "27",
+                    "net": "",
+                    "props": {
+                        "Pin Number": "27"
+                    }
+                },
+                "28": {
+                    "name": "28",
+                    "number": "28",
+                    "net": "",
+                    "props": {
+                        "Pin Number": "28"
+                    }
+                },
+                "29": {
+                    "name": "29",
+                    "number": "29",
+                    "net": "SPI2_MOSI",
+                    "props": {
+                        "Pin Number": "29"
+                    }
+                },
+                "30": {
+                    "name": "30",
+                    "number": "30",
+                    "net": "GND",
+                    "props": {
+                        "Pin Number": "30"
+                    }
+                },
+                "31": {
+                    "name": "31",
+                    "number": "31",
+                    "net": "SPI2_MISO",
+                    "props": {
+                        "Pin Number": "31"
+                    }
+                },
+                "32": {
+                    "name": "32",
+                    "number": "32",
+                    "net": "",
+                    "props": {
+                        "Pin Number": "32"
+                    }
+                },
+                "33": {
+                    "name": "33",
+                    "number": "33",
+                    "net": "NET6",
+                    "props": {
+                        "Pin Number": "33"
+                    }
+                },
+                "34": {
+                    "name": "34",
+                    "number": "34",
+                    "net": "GND",
+                    "props": {
+                        "Pin Number": "34"
+                    }
+                },
+                "35": {
+                    "name": "35",
+                    "number": "35",
+                    "net": "NET5",
+                    "props": {
+                        "Pin Number": "35"
+                    }
+                },
+                "36": {
+                    "name": "36",
+                    "number": "36",
+                    "net": "",
+                    "props": {
+                        "Pin Number": "36"
+                    }
+                },
+                "37": {
+                    "name": "37",
+                    "number": "37",
+                    "net": "NET4",
+                    "props": {
+                        "Pin Number": "37"
+                    }
+                },
+                "38": {
+                    "name": "38",
+                    "number": "38",
+                    "net": "",
+                    "props": {
+                        "Pin Number": "38"
+                    }
+                },
+                "39": {
+                    "name": "39",
+                    "number": "39",
+                    "net": "GND",
+                    "props": {
+                        "Pin Number": "39"
+                    }
+                },
+                "40": {
+                    "name": "40",
+                    "number": "40",
+                    "net": "",
+                    "props": {
+                        "Pin Number": "40"
+                    }
+                }
+            }
+        },
+        "gge18": {
+            "props": {
+                "Designator": "C1",
+                "DeviceName": "CT41G-0603-2X1-50V-0.1μF-K(N)",
+                "Value": "100nF",
+                "Supplier Part": "C125205"
+            },
+            "pinInfoMap": {
+                "1": {
+                    "name": "1",
+                    "number": "1",
+                    "net": "GND",
+                    "props": {
+                        "Pin Number": "1"
+                    }
+                },
+                "2": {
+                    "name": "2",
+                    "number": "2",
+                    "net": "3V3",
+                    "props": {
+                        "Pin Number": "2"
+                    }
+                }
+            }
+        },
+        "gge19": {
+            "props": {
+                "Designator": "C2",
+                "DeviceName": "CL10A475KO8NNNC",
+                "Value": "4.7uF",
+                "Supplier Part": "C19666"
+            },
+            "pinInfoMap": {
+                "1": {
+                    "name": "1",
+                    "number": "1",
+                    "net": "GND",
+                    "props": {
+                        "Pin Number": "1"
+                    }
+                },
+                "2": {
+                    "name": "2",
+                    "number": "2",
+                    "net": "3V3",
+                    "props": {
+                        "Pin Number": "2"
+                    }
+                }
+            }
+        },
+        "gge20": {
+            "props": {
+                "Designator": "R1",
+                "DeviceName": "0603WAF220KT5E",
+                "Value": "2.2Ω",
+                "Supplier Part": "C22939"
+            },
+            "pinInfoMap": {
+                "1": {
+                    "name": "1",
+                    "number": "1",
+                    "net": "$1N1224",
+                    "props": {
+                        "Pin Number": "1"
+                    }
+                },
+                "2": {
+                    "name": "2",
+                    "number": "2",
+                    "net": "$1N1217",
+                    "props": {
+                        "Pin Number": "2"
+                    }
+                }
+            }
+        },
+        "gge21": {
+            "props": {
+                "Designator": "R2",
+                "DeviceName": "0603WAF220KT5E",
+                "Value": "2.2Ω",
+                "Supplier Part": "C22939"
+            },
+            "pinInfoMap": {
+                "1": {
+                    "name": "1",
+                    "number": "1",
+                    "net": "$1N1224",
+                    "props": {
+                        "Pin Number": "1"
+                    }
+                },
+                "2": {
+                    "name": "2",
+                    "number": "2",
+                    "net": "$1N1218",
+                    "props": {
+                        "Pin Number": "2"
+                    }
+                }
+            }
+        },
+        "gge25_3": {
+            "props": {
+                "Designator": "R86",
+                "DeviceName": "FRC0603J103TS",
+                "Value": "10kΩ",
+                "Supplier Part": "C2930027"
+            },
+            "pinInfoMap": {
+                "1": {
+                    "name": "1",
+                    "number": "1",
+                    "net": "3V3",
+                    "props": {
+                        "Pin Number": "1"
+                    }
+                },
+                "2": {
+                    "name": "2",
+                    "number": "2",
+                    "net": "NET3",
+                    "props": {
+                        "Pin Number": "2"
+                    }
+                }
+            }
+        }
+    },
+    "designRule": {
+        "trackPhysics": {
+            "copperThickness1oz": {
+                "name": "copperThickness1oz",
+                "isDefault": true,
+                "unit": "mm",
+                "strokeValue": {
+                    "common": {
+                        "min": 0.127,
+                        "max": 2.54,
+                        "default": 0.254
+                    }
+                }
+            },
+            "copperThickness2oz": {
+                "name": "copperThickness2oz",
+                "isDefault": false,
+                "unit": "mm",
+                "strokeValue": {
+                    "common": {
+                        "min": 0.203,
+                        "max": 2.54,
+                        "default": 0.254
+                    }
+                }
+            }
+        },
+        "netRule": {
+            "3V3": {
+                "net": "3V3",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "GND": {
+                "net": "GND",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N1217": {
+                "net": "$1N1217",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N1218": {
+                "net": "$1N1218",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N1219": {
+                "net": "$1N1219",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N1222": {
+                "net": "$1N1222",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N1224": {
+                "net": "$1N1224",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N1226": {
+                "net": "$1N1226",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N2826": {
+                "net": "$1N2826",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N2827": {
+                "net": "$1N2827",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "VBAT": {
+                "net": "VBAT",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "5VOUT": {
+                "net": "5VOUT",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "USB5V": {
+                "net": "USB5V",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N2835": {
+                "net": "$1N2835",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N2836": {
+                "net": "$1N2836",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N2837": {
+                "net": "$1N2837",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N2838": {
+                "net": "$1N2838",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N2839": {
+                "net": "$1N2839",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "+5V": {
+                "net": "+5V",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N3093": {
+                "net": "$1N3093",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N3094": {
+                "net": "$1N3094",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N3312": {
+                "net": "$1N3312",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N3315": {
+                "net": "$1N3315",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "SPI2_CS0": {
+                "net": "SPI2_CS0",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "SPI2_CLK": {
+                "net": "SPI2_CLK",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "SPI2_MOSI": {
+                "net": "SPI2_MOSI",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "SPI2_MISO": {
+                "net": "SPI2_MISO",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "UART_TX": {
+                "net": "UART_TX",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "UART_RX": {
+                "net": "UART_RX",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "LCD_RES": {
+                "net": "LCD_RES",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "LCD_DC": {
+                "net": "LCD_DC",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "LCD_BLK": {
+                "net": "LCD_BLK",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "$1N7542": {
+                "net": "$1N7542",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "NET4": {
+                "net": "NET4",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "NET1": {
+                "net": "NET1",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "NET5": {
+                "net": "NET5",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "NET2": {
+                "net": "NET2",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "NET6": {
+                "net": "NET6",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            },
+            "NET3": {
+                "net": "NET3",
+                "ruleMap": {
+                    "TrackPhysics": ""
+                }
+            }
+        }
+    },
+    "differentialPair": {},
+    "netClass": {},
+    "equalLengthNetGroup": {}
+}

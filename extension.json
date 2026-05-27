@@ -8,7 +8,7 @@
 	"engines": {
 		"eda": "^2.3.0"
 	},
-	"license": "Apache-2.0",
+	"license": "MIT License",
 	"repository": {
 		"type": "extension-store",
 		"url": ""
@@ -16,7 +16,8 @@
 	"categories": "Schematic",
 	"keywords": ["netlist", "schematic", "rebuild", "网表", "原理图"],
 	"images": {
-		"logo": "./images/logo.png"
+		"logo": "./images/logo.png",
+		"banner": ""
 	},
 	"homepage": "https://github.com/easyeda/eext-generate-schematic-from-netlist",
 	"bugs": "https://github.com/easyeda/eext-generate-schematic-from-netlist/issues",

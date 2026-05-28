@@ -4,14 +4,14 @@
 	"displayName": "网表重建原理图",
 	"description": "导入网表JSON文件，自动重建原理图布局",
 	"version": "2.5.1",
-	"publisher": "JLCEDA <support@lceda.cn>",
+	"publisher": "EasyEDA",
 	"engines": {
 		"eda": "^2.3.0"
 	},
 	"license": "MIT License",
 	"repository": {
-		"type": "extension-store",
-		"url": ""
+		"type": "github",
+		"url": "https://github.com/easyeda/eext-generate-schematic-from-netlist"
 	},
 	"categories": "Schematic",
 	"keywords": ["netlist", "schematic", "rebuild", "网表", "原理图"],

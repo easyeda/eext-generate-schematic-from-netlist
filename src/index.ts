@@ -165,20 +165,11 @@ async function rebuildSchematic(netlistData: NetlistData): Promise<void> {
 	const maxComponentsPerRow = 15; // 每行最大器件数
 	let componentCount = 0;
 
-	// 获取系统库UUID
-	const libUuid = await eda.lib_LibrariesList.getSystemLibraryUuid();
-
-	// 检查libUuid是否有效
-	if (!libUuid) {
-		eda.sys_Message.showToastMessage('无法获取系统库UUID', 'error');
-		return;
-	}
-
 	// 遍历所有器件
 	for (const [componentId, component] of Object.entries(netlistData)) {
 		try {
 			// 放置器件
-			const layoutInfo = await placeComponent(component, currentX, currentY, libUuid, componentId);
+			const layoutInfo = await placeComponent(component, currentX, currentY, componentId);
 			if (layoutInfo) {
 				components.push(layoutInfo);
 				eda.sys_Log.add(`器件放置进度: ${components.length}/${Object.keys(netlistData).length}`);
@@ -232,14 +223,16 @@ async function rebuildSchematic(netlistData: NetlistData): Promise<void> {
 /**
  * 查找器件信息
  */
-async function findDeviceInfo(component: NetlistComponent): Promise<any> {
+async function findDeviceInfo(component: NetlistComponent): Promise<{ deviceInfo: any; libraryUuid: string } | null> {
 	// 尝试通过供应商料号查找器件
 	if (component.props['Supplier Part']) {
 		eda.sys_Log.add(`尝试通过供应商料号查找器件: ${component.props['Supplier Part']}`);
 		const devices = await eda.lib_Device.getByLcscIds(component.props['Supplier Part']);
 		if (devices && Array.isArray(devices) && devices.length > 0) {
 			eda.sys_Log.add(`通过供应商料号找到器件: ${component.props.Designator} - ${devices[0].name}`);
-			return devices[0];
+			// 获取系统库UUID作为默认
+			const systemLibUuid = await eda.lib_LibrariesList.getSystemLibraryUuid();
+			return { deviceInfo: devices[0], libraryUuid: systemLibUuid || '' };
 		} else {
 			eda.sys_Log.add(`供应商料号未找到器件: ${component.props['Supplier Part']}`);
 		}
@@ -248,13 +241,31 @@ async function findDeviceInfo(component: NetlistComponent): Promise<any> {
 	// 如果找不到器件，尝试通过器件名称查找
 	if (component.props.device_name) {
 		eda.sys_Log.add(`尝试通过器件名称查找器件: ${component.props.device_name}`);
-		const devices = await eda.lib_Device.search(component.props.device_name, '1');
-		if (devices && Array.isArray(devices) && devices.length > 0) {
-			eda.sys_Log.add(`通过器件名称找到器件: ${component.props.Designator} - ${devices[0].name}`);
-			return devices[0];
-		} else {
-			eda.sys_Log.add(`器件名称未找到器件: ${component.props.device_name}`);
+
+		// 获取系统库、个人库、工程库的 UUID
+		const libUuids: string[] = [];
+		const systemLibUuid = await eda.lib_LibrariesList.getSystemLibraryUuid();
+		if (systemLibUuid) libUuids.push(systemLibUuid);
+
+		const personalLibUuid = await eda.lib_LibrariesList.getPersonalLibraryUuid();
+		if (personalLibUuid) libUuids.push(personalLibUuid);
+
+		const projectLibUuid = await eda.lib_LibrariesList.getProjectLibraryUuid();
+		if (projectLibUuid) libUuids.push(projectLibUuid);
+
+		// 在每个库中搜索器件
+		for (const libUuid of libUuids) {
+			const devices = await eda.lib_Device.search(component.props.device_name, libUuid);
+			if (devices && Array.isArray(devices) && devices.length > 0) {
+				eda.sys_Log.add(`通过器件名称在库 ${libUuid} 找到器件: ${component.props.Designator} - ${devices[0].name}`);
+				return { deviceInfo: devices[0], libraryUuid: libUuid };
+			}
 		}
+
+		// 如果在所有库中都未找到，记录错误
+		const errorMsg = `器件名称 "${component.props.device_name}" 在系统库、个人库、工程库中均未找到`;
+		eda.sys_Log.add(errorMsg);
+		eda.sys_Message.showToastMessage(errorMsg, 'warning');
 	}
 
 	eda.sys_Log.add(
@@ -307,26 +318,24 @@ function calculateComponentSize(pins: any[], x: number, y: number): { width: num
 /**
  * 放置单个器件
  */
-async function placeComponent(
-	component: NetlistComponent,
-	x: number,
-	y: number,
-	libUuid: string,
-	componentId: string,
-): Promise<ComponentLayout | null> {
+async function placeComponent(component: NetlistComponent, x: number, y: number, componentId: string): Promise<ComponentLayout | null> {
 	try {
 		eda.sys_Log.add(`开始放置器件: ${component.props.Designator} 位置(${x}, ${y})`);
 
-		const deviceInfo = await findDeviceInfo(component);
-		if (!deviceInfo) {
+		const result = await findDeviceInfo(component);
+		if (!result) {
 			const errorMsg = `系统库中未找到器件: ${component.props.Designator}`;
 			eda.sys_Log.add(errorMsg);
 			eda.sys_Message.showToastMessage(errorMsg);
 			return null;
 		}
 
+		const { deviceInfo, libraryUuid } = result;
+		eda.sys_Log.add(`使用库 ${libraryUuid} 放置器件: ${component.props.Designator}`);
+
 		// 创建器件实例
-		const primitiveComponent = await eda.sch_PrimitiveComponent.create({ libraryUuid: libUuid, uuid: deviceInfo.uuid }, x, y);
+		const primitiveComponent = await eda.sch_PrimitiveComponent.create({ libraryUuid, uuid: deviceInfo.uuid }, x, y);
+		eda.sys_Log.add(`器件创建结果: ${primitiveComponent ? '成功' : '失败'} - ${component.props.Designator}`);
 
 		if (!primitiveComponent) {
 			const errorMsg = `器件创建失败: ${component.props.Designator}`;
@@ -336,11 +345,17 @@ async function placeComponent(
 		}
 
 		const primitiveId = (primitiveComponent as any).primitiveId;
+		eda.sys_Log.add(`获取 primitiveId: ${primitiveId} - ${component.props.Designator}`);
+
 		await modifyComponentProperties(primitiveId, component);
+		eda.sys_Log.add(`修改器件属性完成: ${component.props.Designator}`);
 
 		// 获取器件引脚信息
 		const pins = await eda.sch_PrimitiveComponent.getAllPinsByPrimitiveId(primitiveId);
+		eda.sys_Log.add(`获取引脚信息: ${pins ? pins.length : 0} 个引脚 - ${component.props.Designator}`);
+
 		const { width, height } = calculateComponentSize(pins, x, y);
+		eda.sys_Log.add(`计算器件尺寸: 宽${width}, 高${height} - ${component.props.Designator}`);
 
 		eda.sys_Log.add(`器件放置成功: ${component.props.Designator} - ${deviceInfo.name}`);
 

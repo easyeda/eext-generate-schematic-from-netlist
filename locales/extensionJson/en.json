@@ -1,10 +1,13 @@
 {
 	"About...": "About...",
-	"网表重建原理图": "Rebuild Schematic from Netlist",
-	"导入网表JSON文件，自动重建原理图布局": "Import netlist JSON file and automatically rebuild schematic layout",
 	"netlist": "netlist",
-	"schematic": "schematic",
 	"rebuild": "rebuild",
+	"schematic": "schematic",
+	"关于...": "About...",
+	"原理图": "schematic",
+	"导入网表JSON文件，自动重建原理图布局": "Import netlist JSON file and automatically rebuild schematic layout",
+	"导入网表文件": "Import Netlist File",
 	"网表": "netlist",
-	"原理图": "schematic"
+	"网表重建": "Netlist Rebuild",
+	"网表重建原理图": "Rebuild Schematic from Netlist"
 }

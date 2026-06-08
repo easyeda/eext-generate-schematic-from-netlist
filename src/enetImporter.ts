@@ -59,12 +59,12 @@ export async function importEnetSchematic(fileContent: string): Promise<void> {
 				enetData = { version: '1.0', components: parsed };
 			}
 		} catch (e) {
-			eda.sys_Message.showToastMessage('JSON 解析失败', 'error');
+			eda.sys_Message.showToastMessage(eda.sys_I18n.text('JSON parsing failed'), 'error');
 			return;
 		}
 
 		if (!enetData || !enetData.components) {
-			eda.sys_Message.showToastMessage('无效的网表格式', 'error');
+			eda.sys_Message.showToastMessage(eda.sys_I18n.text('Invalid netlist format'), 'error');
 			return;
 		}
 
@@ -73,8 +73,12 @@ export async function importEnetSchematic(fileContent: string): Promise<void> {
 
 		// 2. 确认对话框
 		const confirmed = await new Promise<boolean>((resolve) => {
-			eda.sys_Dialog.showConfirmationMessage(`解析到 ${componentCount} 个器件，是否开始导入？`, '确认导入', '确认', '取消', (result: boolean) =>
-				resolve(result),
+			eda.sys_Dialog.showConfirmationMessage(
+				eda.sys_I18n.text('Detected ${1} components, start importing?', undefined, undefined, componentCount),
+				eda.sys_I18n.text('Confirm Import'),
+				eda.sys_I18n.text('Confirm'),
+				eda.sys_I18n.text('Cancel'),
+				(result: boolean) => resolve(result),
 			);
 		});
 
@@ -83,7 +87,7 @@ export async function importEnetSchematic(fileContent: string): Promise<void> {
 		// 3. 获取系统库 UUID
 		const libUuid = await eda.lib_LibrariesList.getSystemLibraryUuid();
 		if (!libUuid) {
-			eda.sys_Message.showToastMessage('无法获取系统库 UUID', 'error');
+			eda.sys_Message.showToastMessage(eda.sys_I18n.text('Unable to get system library UUID'), 'error');
 			return;
 		}
 
@@ -100,7 +104,7 @@ export async function importEnetSchematic(fileContent: string): Promise<void> {
 				// 4.1 查找器件
 				const deviceInfo = await findDevice(compData.props);
 				if (!deviceInfo) {
-					eda.sys_Log.add(`[警告] 未找到器件: ${compData.props.Designator}`);
+					eda.sys_Log.add(eda.sys_I18n.text('[Warning] Component not found: ${1}', undefined, undefined, compData.props.Designator));
 					continue;
 				}
 
@@ -130,10 +134,10 @@ export async function importEnetSchematic(fileContent: string): Promise<void> {
 					// 4.5 创建网络导线
 					await createWires(layout, compData.pinInfoMap, pins);
 
-					eda.sys_Log.add(`放置成功: ${compData.props.Designator}`);
+					eda.sys_Log.add(eda.sys_I18n.text('Placed: ${1}', undefined, undefined, compData.props.Designator));
 				}
 			} catch (err) {
-				console.error(`处理器件 ${compData.props.Designator} 出错:`, err);
+				console.error(`Error processing component ${compData.props.Designator}:`, err);
 			}
 
 			// 更新坐标
@@ -146,9 +150,18 @@ export async function importEnetSchematic(fileContent: string): Promise<void> {
 			}
 		}
 
-		eda.sys_Message.showToastMessage(`导入完成！成功放置 ${placedComponents.length}/${componentCount} 个器件`, 'success');
+		eda.sys_Message.showToastMessage(
+			eda.sys_I18n.text(
+				'Import completed! Successfully placed ${1}/${2} components',
+				undefined,
+				undefined,
+				placedComponents.length,
+				componentCount,
+			),
+			'success',
+		);
 	} catch (error) {
-		eda.sys_Message.showToastMessage(`脚本执行出错: ${error}`, 'error');
+		eda.sys_Message.showToastMessage(eda.sys_I18n.text('Script execution error: ${1}', undefined, undefined, error), 'error');
 		console.error(error);
 	}
 }
@@ -238,7 +251,7 @@ async function createWires(layout: LayoutInfo, pinMap: Record<string, EnetPinInf
 			try {
 				await eda.sch_PrimitiveWire.create([startX, startY, endX, endY], netName.toUpperCase());
 			} catch (e) {
-				console.error(`创建导线失败 ${netName}:`, e);
+				console.error(`Failed to create wire ${netName}:`, e);
 			}
 		}
 	}

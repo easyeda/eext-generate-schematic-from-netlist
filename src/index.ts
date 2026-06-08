@@ -51,7 +51,7 @@ export async function importNetlist(): Promise<void> {
 		// 解析网表数据
 		const netlistData = parseNetlistData(fileContent);
 		if (!netlistData) {
-			eda.sys_Message.showToastMessage('网表文件格式错误，请检查文件格式', 'error');
+			eda.sys_Message.showToastMessage(eda.sys_I18n.text('Netlist file format error, please check the file format'), 'error');
 			return;
 		}
 
@@ -59,10 +59,10 @@ export async function importNetlist(): Promise<void> {
 		const componentCount = Object.keys(netlistData).length;
 		const confirmed = await new Promise<boolean>((resolve) => {
 			eda.sys_Dialog.showConfirmationMessage(
-				`检测到 ${componentCount} 个器件，是否开始重建原理图？`,
-				'确认导入',
-				'确认',
-				'取消',
+				eda.sys_I18n.text('Detected ${1} components, start rebuilding schematic?', undefined, undefined, componentCount),
+				eda.sys_I18n.text('Confirm Import'),
+				eda.sys_I18n.text('Confirm'),
+				eda.sys_I18n.text('Cancel'),
 				(mainButtonClicked: boolean) => {
 					resolve(mainButtonClicked);
 				},
@@ -71,10 +71,10 @@ export async function importNetlist(): Promise<void> {
 
 		if (confirmed) {
 			await rebuildSchematic(netlistData);
-			eda.sys_Message.showToastMessage('原理图重建完成！', 'success');
+			eda.sys_Message.showToastMessage(eda.sys_I18n.text('Schematic rebuild completed!'), 'success');
 		}
 	} catch (error) {
-		eda.sys_Message.showToastMessage(`导入失败: ${error}`, 'error');
+		eda.sys_Message.showToastMessage(eda.sys_I18n.text('Import failed: ${1}', undefined, undefined, error), 'error');
 	}
 }
 
@@ -86,7 +86,7 @@ async function selectAndReadNetlistFile(): Promise<string | null> {
 		const file = await eda.sys_FileSystem.openReadFileDialog(['json', 'enet']);
 
 		if (!file) {
-			eda.sys_Message.showToastMessage('未选择文件', 'info');
+			eda.sys_Message.showToastMessage(eda.sys_I18n.text('No file selected'), 'info');
 			return null;
 		}
 
@@ -103,13 +103,13 @@ async function selectAndReadNetlistFile(): Promise<string | null> {
 				resolve(result || null);
 			};
 			reader.onerror = () => {
-				reject(new Error('文件读取失败'));
+				reject(new Error(eda.sys_I18n.text('File read failed')));
 			};
 			reader.readAsText(file);
 		});
 	} catch (error) {
-		console.error('文件选择失败:', error);
-		eda.sys_Message.showToastMessage('文件选择失败: ' + error, 'error');
+		console.error('File selection failed:', error);
+		eda.sys_Message.showToastMessage(eda.sys_I18n.text('File selection failed: ${1}', undefined, undefined, error), 'error');
 		return null;
 	}
 }
@@ -148,7 +148,7 @@ function parseNetlistData(fileContent: string): NetlistData | null {
 
 		return data as NetlistData;
 	} catch (error) {
-		console.error('文件解析失败:', error);
+		console.error('File parsing failed:', error);
 		return null;
 	}
 }
@@ -170,7 +170,7 @@ async function rebuildSchematic(netlistData: NetlistData): Promise<void> {
 
 	// 检查libUuid是否有效
 	if (!libUuid) {
-		eda.sys_Message.showToastMessage('无法获取系统库UUID', 'error');
+		eda.sys_Message.showToastMessage(eda.sys_I18n.text('Unable to get system library UUID'), 'error');
 		return;
 	}
 
@@ -181,14 +181,22 @@ async function rebuildSchematic(netlistData: NetlistData): Promise<void> {
 			const layoutInfo = await placeComponent(component, currentX, currentY, libUuid, componentId);
 			if (layoutInfo) {
 				components.push(layoutInfo);
-				eda.sys_Log.add(`器件放置进度: ${components.length}/${Object.keys(netlistData).length}`);
+				eda.sys_Log.add(
+					eda.sys_I18n.text(
+						'Component placement progress: ${1}/${2}',
+						undefined,
+						undefined,
+						components.length,
+						Object.keys(netlistData).length,
+					),
+				);
 
 				// 立即为当前器件创建网络标签
 				await createNetWiresForSingleComponent(layoutInfo, netlistData);
 			} else {
 				// 记录未找到的器件
 				notFoundComponents.push(component.props.Designator);
-				eda.sys_Log.add(`器件放置失败，已跳过: ${component.props.Designator}`);
+				eda.sys_Log.add(eda.sys_I18n.text('Component placement failed, skipped: ${1}', undefined, undefined, component.props.Designator));
 			}
 
 			// 计算下一个器件位置
@@ -202,10 +210,10 @@ async function rebuildSchematic(netlistData: NetlistData): Promise<void> {
 				currentX += gridSize * 3;
 			}
 		} catch (error) {
-			const errorMsg = `放置器件 ${component.props.Designator} 发生异常: ${error}`;
+			const errorMsg = eda.sys_I18n.text('Error placing component ${1}: ${2}', undefined, undefined, component.props.Designator, error);
 			eda.sys_Log.add(errorMsg);
 			eda.sys_Message.showToastMessage(errorMsg, 'error');
-			console.error(`放置器件 ${component.props.Designator} 失败:`, error);
+			console.error(errorMsg);
 			// 异常情况也记录为未找到
 			notFoundComponents.push(component.props.Designator);
 		}
@@ -216,14 +224,30 @@ async function rebuildSchematic(netlistData: NetlistData): Promise<void> {
 	const successComponents = components.length;
 	const failedComponents = notFoundComponents.length;
 
-	eda.sys_Log.add(`原理图重建完成 - 总器件数: ${totalComponents}, 成功: ${successComponents}, 失败: ${failedComponents}`);
+	eda.sys_Log.add(
+		eda.sys_I18n.text(
+			'Schematic rebuild complete - Total: ${1}, Success: ${2}, Failed: ${3}',
+			undefined,
+			undefined,
+			totalComponents,
+			successComponents,
+			failedComponents,
+		),
+	);
 
 	if (failedComponents > 0) {
-		const message = `重建完成！成功放置 ${successComponents}/${totalComponents} 个器件。\n未找到的器件: ${notFoundComponents.join(', ')}`;
-		eda.sys_Log.add(`未找到的器件列表: ${notFoundComponents.join(', ')}`);
+		const message = eda.sys_I18n.text(
+			'Rebuild complete! Placed ${1}/${2} components.\nMissing: ${3}',
+			undefined,
+			undefined,
+			successComponents,
+			totalComponents,
+			notFoundComponents.join(', '),
+		);
+		eda.sys_Log.add(eda.sys_I18n.text('Missing components: ${1}', undefined, undefined, notFoundComponents.join(', ')));
 		eda.sys_Message.showToastMessage(message, 'warning');
 	} else {
-		const message = `重建完成！成功放置所有 ${successComponents} 个器件。`;
+		const message = eda.sys_I18n.text('Rebuild complete! All ${1} components placed.', undefined, undefined, successComponents);
 		eda.sys_Log.add(message);
 		eda.sys_Message.showToastMessage(message, 'success');
 	}
@@ -235,30 +259,41 @@ async function rebuildSchematic(netlistData: NetlistData): Promise<void> {
 async function findDeviceInfo(component: NetlistComponent): Promise<any> {
 	// 尝试通过供应商料号查找器件
 	if (component.props['Supplier Part']) {
-		eda.sys_Log.add(`尝试通过供应商料号查找器件: ${component.props['Supplier Part']}`);
+		eda.sys_Log.add(eda.sys_I18n.text('Searching by supplier part: ${1}', undefined, undefined, component.props['Supplier Part']));
 		const devices = await eda.lib_Device.getByLcscIds(component.props['Supplier Part']);
 		if (devices && Array.isArray(devices) && devices.length > 0) {
-			eda.sys_Log.add(`通过供应商料号找到器件: ${component.props.Designator} - ${devices[0].name}`);
+			eda.sys_Log.add(
+				eda.sys_I18n.text('Found by supplier part: ${1} - ${2}', undefined, undefined, component.props.Designator, devices[0].name),
+			);
 			return devices[0];
 		} else {
-			eda.sys_Log.add(`供应商料号未找到器件: ${component.props['Supplier Part']}`);
+			eda.sys_Log.add(eda.sys_I18n.text('Supplier part not found: ${1}', undefined, undefined, component.props['Supplier Part']));
 		}
 	}
 
 	// 如果找不到器件，尝试通过器件名称查找
 	if (component.props.device_name) {
-		eda.sys_Log.add(`尝试通过器件名称查找器件: ${component.props.device_name}`);
+		eda.sys_Log.add(eda.sys_I18n.text('Searching by device name: ${1}', undefined, undefined, component.props.device_name));
 		const devices = await eda.lib_Device.search(component.props.device_name, '1');
 		if (devices && Array.isArray(devices) && devices.length > 0) {
-			eda.sys_Log.add(`通过器件名称找到器件: ${component.props.Designator} - ${devices[0].name}`);
+			eda.sys_Log.add(
+				eda.sys_I18n.text('Found by device name: ${1} - ${2}', undefined, undefined, component.props.Designator, devices[0].name),
+			);
 			return devices[0];
 		} else {
-			eda.sys_Log.add(`器件名称未找到器件: ${component.props.device_name}`);
+			eda.sys_Log.add(eda.sys_I18n.text('Device name not found: ${1}', undefined, undefined, component.props.device_name));
 		}
 	}
 
 	eda.sys_Log.add(
-		`器件查找失败: ${component.props.Designator} - 供应商料号: ${component.props['Supplier Part'] || '无'}, 器件名称: ${component.props.device_name || '无'}`,
+		eda.sys_I18n.text(
+			'Component search failed: ${1} - Supplier Part: ${2}, Device Name: ${3}',
+			undefined,
+			undefined,
+			component.props.Designator,
+			component.props['Supplier Part'] || '-',
+			component.props.device_name || '-',
+		),
 	);
 	return null;
 }
@@ -278,9 +313,9 @@ async function modifyComponentProperties(primitiveId: string, component: Netlist
 	if (Object.keys(modifyProps).length > 0) {
 		try {
 			await eda.sch_PrimitiveComponent.modify(primitiveId, modifyProps);
-			console.log(`修改器件属性: ${component.props.Designator}`, modifyProps);
+			console.log(`Modified component props: ${component.props.Designator}`, modifyProps);
 		} catch (error) {
-			console.error(`修改器件属性失败: ${component.props.Designator}`, error);
+			console.error(`Failed to modify component props: ${component.props.Designator}`, error);
 		}
 	}
 }
@@ -315,11 +350,11 @@ async function placeComponent(
 	componentId: string,
 ): Promise<ComponentLayout | null> {
 	try {
-		eda.sys_Log.add(`开始放置器件: ${component.props.Designator} 位置(${x}, ${y})`);
+		eda.sys_Log.add(eda.sys_I18n.text('Placing component: ${1} at (${2}, ${3})', undefined, undefined, component.props.Designator, x, y));
 
 		const deviceInfo = await findDeviceInfo(component);
 		if (!deviceInfo) {
-			const errorMsg = `系统库中未找到器件: ${component.props.Designator}`;
+			const errorMsg = eda.sys_I18n.text('Component not found in system library: ${1}', undefined, undefined, component.props.Designator);
 			eda.sys_Log.add(errorMsg);
 			eda.sys_Message.showToastMessage(errorMsg);
 			return null;
@@ -329,7 +364,7 @@ async function placeComponent(
 		const primitiveComponent = await eda.sch_PrimitiveComponent.create({ libraryUuid: libUuid, uuid: deviceInfo.uuid }, x, y);
 
 		if (!primitiveComponent) {
-			const errorMsg = `器件创建失败: ${component.props.Designator}`;
+			const errorMsg = eda.sys_I18n.text('Component creation failed: ${1}', undefined, undefined, component.props.Designator);
 			eda.sys_Log.add(errorMsg);
 			eda.sys_Message.showToastMessage(errorMsg);
 			return null;
@@ -342,7 +377,7 @@ async function placeComponent(
 		const pins = await eda.sch_PrimitiveComponent.getAllPinsByPrimitiveId(primitiveId);
 		const { width, height } = calculateComponentSize(pins, x, y);
 
-		eda.sys_Log.add(`器件放置成功: ${component.props.Designator} - ${deviceInfo.name}`);
+		eda.sys_Log.add(eda.sys_I18n.text('Component placed: ${1} - ${2}', undefined, undefined, component.props.Designator, deviceInfo.name));
 
 		return {
 			primitiveId,
@@ -354,10 +389,10 @@ async function placeComponent(
 			pins: pins || [],
 		};
 	} catch (error) {
-		const errorMsg = `放置器件异常: ${component.props.Designator} - ${error}`;
+		const errorMsg = eda.sys_I18n.text('Error placing component ${1}: ${2}', undefined, undefined, component.props.Designator, error);
 		eda.sys_Log.add(errorMsg);
 		eda.sys_Message.showToastMessage(errorMsg, 'error');
-		console.error('放置器件失败:', error);
+		console.error(errorMsg);
 		return null;
 	}
 }
@@ -369,7 +404,7 @@ async function createNetWiresForSingleComponent(component: ComponentLayout, netl
 	// 根据 componentId 查找对应的网表数据
 	const componentData = netlistData[component.componentId];
 	if (!componentData) {
-		console.warn(`未找到组件 ${component.componentId} 对应的网表数据`);
+		console.warn(`Netlist data not found for component ${component.componentId}`);
 		return;
 	}
 
@@ -419,15 +454,17 @@ async function createNetWiresForSingleComponent(component: ComponentLayout, netl
 					// 创建带网络标签的导线
 					const upperNetName = netName.toUpperCase();
 					await eda.sch_PrimitiveWire.create([startX, startY, endX, endY], upperNetName);
-					eda.sys_Log.add(`创建网络导线: ${upperNetName} - 器件: ${component.componentId}`);
+					eda.sys_Log.add(
+						eda.sys_I18n.text('Created net wire: ${1} - Component: ${2}', undefined, undefined, upperNetName, component.componentId),
+					);
 				} catch (error) {
-					const errorMsg = `创建网络导线失败 ${netName.toUpperCase()}: ${error}`;
+					const errorMsg = eda.sys_I18n.text('Failed to create net wire ${1}: ${2}', undefined, undefined, netName.toUpperCase(), error);
 					eda.sys_Log.add(errorMsg);
 					eda.sys_Message.showToastMessage(errorMsg);
-					console.error(`创建网络导线失败 ${netName.toUpperCase()}:`, error);
+					console.error(errorMsg);
 				}
 			} else {
-				console.warn(`组件 ${component.componentId} 未找到引脚 ${pinNumber}`);
+				console.warn(`Pin ${pinNumber} not found for component ${component.componentId}`);
 			}
 		}
 	}
@@ -445,7 +482,7 @@ async function createNetWiresForComponents(targetComponents: ComponentLayout[], 
 		// 根据 componentId 查找对应的网表数据
 		const componentData = netlistData[layout.componentId];
 		if (!componentData) {
-			console.warn(`未找到组件 ${layout.componentId} 对应的网表数据`);
+			console.warn(`Netlist data not found for component ${layout.componentId}`);
 			continue;
 		}
 
@@ -479,7 +516,7 @@ async function createNetWiresForComponents(targetComponents: ComponentLayout[], 
 						actualPin: actualPin,
 					});
 				} else {
-					console.warn(`组件 ${layout.componentId} 未找到引脚 ${pinNumber}`);
+					console.warn(`Pin ${pinNumber} not found for component ${layout.componentId}`);
 				}
 			}
 		}
@@ -520,12 +557,20 @@ async function createNetWiresForComponents(targetComponents: ComponentLayout[], 
 					// 创建带网络标签的导线
 					const upperNetName = netName.toUpperCase();
 					await eda.sch_PrimitiveWire.create([startX, startY, endX, endY], upperNetName);
-					eda.sys_Log.add(`创建网络导线: ${upperNetName} - 器件: ${connection.component.componentId}`);
+					eda.sys_Log.add(
+						eda.sys_I18n.text(
+							'Created net wire: ${1} - Component: ${2}',
+							undefined,
+							undefined,
+							upperNetName,
+							connection.component.componentId,
+						),
+					);
 				} catch (error) {
-					const errorMsg = `创建网络导线失败 ${netName.toUpperCase()}: ${error}`;
+					const errorMsg = eda.sys_I18n.text('Failed to create net wire ${1}: ${2}', undefined, undefined, netName.toUpperCase(), error);
 					eda.sys_Log.add(errorMsg);
 					eda.sys_Message.showToastMessage(errorMsg);
-					console.error(`创建网络导线失败 ${netName.toUpperCase()}:`, error);
+					console.error(errorMsg);
 				}
 			}
 		}
@@ -545,5 +590,12 @@ async function createNetWires(components: ComponentLayout[], netlistData: Netlis
  * 关于对话框
  */
 export function about(): void {
-	eda.sys_Message.showToastMessage(`网表重建原理图扩展 v${extensionConfig.version} - 支持导入网表JSON文件并自动重建原理图`);
+	eda.sys_Message.showToastMessage(
+		eda.sys_I18n.text(
+			'Netlist Schematic Rebuild Extension v${1} - Import netlist JSON files and auto-rebuild schematics',
+			undefined,
+			undefined,
+			extensionConfig.version,
+		),
+	);
 }

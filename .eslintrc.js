@@ -8,6 +8,7 @@ module.exports = {
 	rules: {
 		'no-param-reassign': 'off',
 		'max-params': 'off',
+		'no-template-curly-in-string': 'off',
 		'tsdoc/syntax': 'warn',
 	},
 	root: true,
